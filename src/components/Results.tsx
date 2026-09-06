@@ -96,30 +96,58 @@ function loadRasterImage(src: string) {
   });
 }
 
-function drawCoverImage(
+const RESULT_SPRITE_INDEX: Record<string, number> = {
+  'steady-after-mutual': 0,
+  'slow-to-start': 1,
+  'keep-self': 2,
+  'need-to-know': 3,
+  'cooling-means-something': 4,
+  'wait-for-clearer-signal': 5,
+  'best-in-ambiguity': 6,
+  'pull-away-when-chased': 7,
+  'leave-before-rejection': 8,
+  'fine-but-not-fine': 9,
+  'solve-it-now': 10,
+  'need-a-real-ending': 11,
+};
+
+function storySpritePosition(index: number) {
+  const column = index % 4;
+  const row = Math.floor(index / 4);
+  return `${(column / 3) * 100}% ${(row / 2) * 100}%`;
+}
+
+function drawStoryTile(
   ctx: CanvasRenderingContext2D,
   image: HTMLImageElement,
+  index: number,
   x: number,
   y: number,
   width: number,
   height: number,
 ) {
-  const imageRatio = image.width / image.height;
+  const tileWidth = image.width / 4;
+  const tileHeight = image.height / 3;
+  const column = index % 4;
+  const row = Math.floor(index / 4);
+  const sourceX = column * tileWidth;
+  const sourceY = row * tileHeight;
+  const tileRatio = tileWidth / tileHeight;
   const boxRatio = width / height;
-  let sourceX = 0;
-  let sourceY = 0;
-  let sourceWidth = image.width;
-  let sourceHeight = image.height;
+  let cropX = sourceX;
+  let cropY = sourceY;
+  let cropWidth = tileWidth;
+  let cropHeight = tileHeight;
 
-  if (imageRatio > boxRatio) {
-    sourceWidth = image.height * boxRatio;
-    sourceX = (image.width - sourceWidth) / 2;
+  if (tileRatio > boxRatio) {
+    cropWidth = tileHeight * boxRatio;
+    cropX += (tileWidth - cropWidth) / 2;
   } else {
-    sourceHeight = image.width / boxRatio;
-    sourceY = (image.height - sourceHeight) / 2;
+    cropHeight = tileWidth / boxRatio;
+    cropY += (tileHeight - cropHeight) / 2;
   }
 
-  ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+  ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, x, y, width, height);
 }
 
 export default function Results({ result, onRestart }: ResultsProps) {
@@ -128,6 +156,8 @@ export default function Results({ result, onRestart }: ResultsProps) {
   const top3 = ranking.slice(0, 3);
   const secondaryRole = ranking[1]?.role;
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
+  const storyIndex = RESULT_SPRITE_INDEX[role.id] ?? 0;
+  const storyBackgroundPosition = storySpritePosition(storyIndex);
 
   const resultText = `我最容易陷入的恋爱剧情是：\n【${role.name}】\n${role.tagline}\n\n“${role.quote}”`;
 
@@ -187,12 +217,12 @@ export default function Results({ result, onRestart }: ResultsProps) {
     const imageHeight = 500;
 
     try {
-      const image = await loadRasterImage('/assets/result-romance.jpg');
+      const image = await loadRasterImage('/assets/results/story-results-sprite.webp');
       ctx.save();
       ctx.beginPath();
       ctx.roundRect(imageX, imageY, imageWidth, imageHeight, 34);
       ctx.clip();
-      drawCoverImage(ctx, image, imageX, imageY, imageWidth, imageHeight);
+      drawStoryTile(ctx, image, storyIndex, imageX, imageY, imageWidth, imageHeight);
       ctx.restore();
     } catch {
       const fallback = ctx.createLinearGradient(imageX, imageY, imageX + imageWidth, imageY + imageHeight);
@@ -272,7 +302,12 @@ export default function Results({ result, onRestart }: ResultsProps) {
           <h1>{role.name}</h1>
           <p className="result-tagline">“{role.tagline}”</p>
           <div className="result-art-card">
-            <img src="/assets/result-romance.jpg" alt="粉色暮光中的恋爱剧情氛围图" />
+            <div
+              className="result-story-art"
+              role="img"
+              aria-label={`${role.name}的专属剧情插画`}
+              style={{ backgroundPosition: storyBackgroundPosition }}
+            />
             <div className="result-photo-note">{role.quote}</div>
           </div>
           <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>

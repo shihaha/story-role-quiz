@@ -625,15 +625,17 @@ body {
   border-radius: 24px;
   background: transparent;
 }
-.result-art-card img {
+.result-story-art {
   width: 100%;
   display: block;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: 384 / 341;
   border-radius: 24px;
   border: 1px solid #f1e3e9;
   box-shadow: 0 12px 34px rgba(91, 66, 84, .12);
-  filter: saturate(1.08) contrast(.96);
+  background-image: url('/assets/results/story-results-sprite.webp');
+  background-size: 400% 300%;
+  background-repeat: no-repeat;
+  background-color: #f8edf1;
 }
 .result-photo-note {
   position: absolute;
