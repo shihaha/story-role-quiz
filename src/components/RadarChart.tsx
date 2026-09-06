@@ -20,7 +20,7 @@ export default function RadarChart({ values, accent }: RadarProps) {
 
   return (
     <div className="radar-wrap">
-      <svg viewBox={`0 0 ${size} ${size}`} className="radar-svg" role="img" aria-label="角色五维图">
+      <svg viewBox={`0 0 ${size} ${size}`} className="radar-svg" role="img" aria-label="关系五维图">
         {[2, 4, 6, 8, 10].map((level) => (
           <polygon
             key={level}

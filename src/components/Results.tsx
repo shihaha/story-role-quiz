@@ -10,29 +10,29 @@ interface ResultsProps {
 
 const DIMENSION_COPY = [
   {
-    high: '你不太喜欢把关键走向完全交给运气。越重要的事，你越会下意识去判断局面、留后手、把能控制的部分抓回来。',
-    mid: '你会在“掌控”和“顺势”之间切换。能管的事会管，但发现继续硬控没有意义时，也能放手。',
-    low: '你对“必须掌控一切”的需求不高。很多时候你更相信现场感觉，愿意让事情自己长出下一步。',
+    high: '关系里只要出现明显变化，你很容易马上注意到。真正让你难受的往往不是坏答案，而是长时间不知道答案。',
+    mid: '你会留意关系里的变化，但通常不会因为一个小信号马上推翻之前的判断。',
+    low: '你对短期波动比较放松。一次回复慢、一次状态差，通常不足以让你重新判断整段关系。',
   },
   {
-    high: '你的情绪并不轻。真正重要的人和事很容易在你心里留下后劲，只是你未必每次都直接说出来。',
-    mid: '你既不是完全冷处理，也不会让情绪接管所有判断。多数时候，你能感受到，也能继续做事。',
-    low: '你更习惯把情绪压缩成信息：发生了什么、接下来怎么办。别人可能会觉得你比实际更冷静。',
+    high: '关系真正靠近以后，你会更需要自己的空间。太密、太快、太早进入彼此全部生活，都可能让你产生压力。',
+    mid: '你既需要亲密，也需要自己的节奏。关系靠近并不会让你天然抗拒，但太快时你会想慢一点。',
+    low: '你对真正的靠近通常比较舒服。分享生活、表达需要、进入彼此计划，对你来说更像关系自然往前走。',
   },
   {
-    high: '你的人物推动力很强。很多剧情不是等来的，而是你先发消息、先试、先改、先迈出去之后才真正开始。',
-    mid: '你不是纯冲动派，也不是纯观望派。你通常需要一个足够明确的触发点，到了那个点就会动。',
-    low: '你更像观察后出手的人。没看清之前不急着行动，一旦决定，往往比别人以为的更坚定。',
+    high: '你对关系里的细微信号很敏感。模糊回复、临时取消、语气变化，都很容易被你放进“这是不是在拒绝我”的判断里。',
+    mid: '你能察觉不对劲，但通常还会给事实一点时间。你不会完全忽略信号，也不太愿意只凭一个细节定结论。',
+    low: '你比较少从模糊信号里直接读出拒绝。除非对方表现得足够明确，否则你更愿意把事情继续放在观察区。',
   },
   {
-    high: '你需要一定的秩序感。不是死守规则，而是希望事情讲基本逻辑、关系有边界、承诺最好算数。',
-    mid: '你会尊重规则，但不会把规则当答案。多数时候你先看它有没有道理，再决定要不要照做。',
-    low: '你天然会对“大家都这么做”多问一句为什么。越是只剩标准答案的地方，你越想自己试出另一条路。',
+    high: '有感觉时你更容易真的往前走：发消息、约见面、把问题说开，很多剧情会因为你先动一步才继续。',
+    mid: '你通常需要一个足够明确的信号才会行动。不是完全被动，但也不会什么都没看清就冲进去。',
+    low: '你更习惯等对方给出足够明确的回应。即使心里已经有感觉，你也可能因为不想先暴露自己而停在原地。',
   },
   {
-    high: '你很容易进入人群中心：不一定是最吵的，但你会影响现场气氛、关系流动，别人也更容易注意到你。',
-    mid: '你在人群里的存在感是可调的。熟悉时能进入中心，不熟或没兴趣时也能迅速退回自己的位置。',
-    low: '你更习惯给自己留一点边缘位置。不是排斥别人，而是你需要先确认这个场域值不值得自己真正进入。',
+    high: '很多在意和失望你更习惯先自己处理。你不一定会当场说，但没说出口的东西并不代表没有留下。',
+    mid: '你会看事情和时机决定说不说。真正重要的问题通常还是会表达，只是不一定当下马上说。',
+    low: '你的情绪比较容易被对方看见。喜欢、介意、失望、需要安慰时，你更愿意直接让关系知道发生了什么。',
   },
 ];
 
@@ -44,19 +44,20 @@ function dimensionCopy(index: number, value: number) {
 }
 
 function firstImpression(coords: number[]) {
-  const social = coords[4];
-  const emotion = coords[1];
-  if (social >= 7 && emotion >= 7) return '别人很容易先记住你的存在感和情绪反应，你通常不是“完全没印象”的那类人。';
-  if (social <= 4 && emotion <= 4) return '第一眼你可能显得安静、克制、甚至有点难读，真正的信息通常藏在相处之后。';
-  if (social >= 7) return '别人容易觉得你会接住场面、能融进人群，但未必马上知道你真正的底线在哪。';
-  return '别人最先看到的通常不是你的全部。你会留一点距离，让关系慢慢决定你展示多少。';
+  const approach = coords[3];
+  const suppress = coords[4];
+  if (approach >= 7 && suppress <= 4) return '刚开始有感觉时，你通常不会一直装没事。只要判断值得，你会给对方比较明确的回应。';
+  if (approach <= 4 && suppress >= 7) return '你很容易出现“心里已经有感觉，表面还像什么都没发生”的状态。';
+  if (approach >= 7) return '你不是纯等对方的人。真正喜欢时，你会想办法让关系往前一点，只是未必把全部情绪都说出来。';
+  return '你刚开始喜欢一个人时更偏观察。不是没有感觉，而是通常要等关系给你更多信号。';
 }
 
 function pressureMode(coords: number[]) {
-  if (coords[0] >= 7 && coords[2] >= 7) return '越到关键时刻，你越容易从情绪里切回行动：先处理、先救场、先把局面重新抓住。';
-  if (coords[1] >= 8) return '压力真正击中你时，最先放大的往往不是任务本身，而是“这件事对我意味着什么”。';
-  if (coords[3] <= 3) return '压力一大，你反而更容易推翻原方案。别人忙着守计划时，你可能已经在找出口。';
-  return '你在压力下通常先确认边界和可控部分，再决定是稳住还是换路。';
+  if (coords[0] >= 8 && coords[3] >= 7) return '关系一变模糊，你更容易主动确认。对你来说，尽快知道发生了什么，比长时间悬着更好受。';
+  if (coords[2] >= 8 && coords[3] <= 3) return '一旦你觉得自己可能被拒绝，最自然的保护方式往往不是追问，而是先减少投入。';
+  if (coords[1] >= 8) return '关系越近、推进越快，你越需要重新找回自己的空间。压力大时，后退一点会让你重新舒服。';
+  if (coords[4] >= 8) return '关系出现问题时，你第一反应更容易先自己消化。真正的风险是，对方可能根本不知道你已经开始不舒服。';
+  return '关系出现波动时，你通常会先观察一下，再决定是谈、等，还是调整自己的投入。';
 }
 
 function wrapCanvasText(
@@ -95,7 +96,7 @@ export default function Results({ result, onRestart }: ResultsProps) {
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
   const quietestIndex = userCoords.indexOf(Math.min(...userCoords));
 
-  const resultText = `如果把我写进一部剧里，我拿到的是【${role.name}】。\n${role.tagline}\n\n“${role.quote}”`;
+  const resultText = `我最容易陷入的恋爱剧情是：\n【${role.name}】\n${role.tagline}\n\n“${role.quote}”`;
 
   const copyResult = async () => {
     try {
@@ -132,24 +133,24 @@ export default function Results({ result, onRestart }: ResultsProps) {
 
     ctx.fillStyle = 'rgba(255,255,255,.55)';
     ctx.font = '28px system-ui, sans-serif';
-    ctx.fillText('STORY ROLE TEST', 86, 120);
+    ctx.fillText('LOVE STORY TEST', 86, 120);
 
     ctx.fillStyle = 'rgba(255,255,255,.75)';
     ctx.font = '34px system-ui, sans-serif';
-    ctx.fillText('如果把你写进一部剧里', 86, 205);
+    ctx.fillText('你最容易陷入哪种恋爱剧情？', 86, 205);
 
     ctx.fillStyle = role.accent;
-    ctx.font = 'bold 92px system-ui, sans-serif';
-    ctx.fillText(role.name, 86, 345);
+    ctx.font = 'bold 58px system-ui, sans-serif';
+    let y = wrapCanvasText(ctx, role.name, 86, 315, 900, 72, 3);
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '36px system-ui, sans-serif';
-    let y = wrapCanvasText(ctx, role.tagline, 86, 420, 860, 56, 3);
+    ctx.font = '30px system-ui, sans-serif';
+    y = wrapCanvasText(ctx, role.tagline, 86, y + 18, 880, 46, 3);
 
     ctx.fillStyle = 'rgba(255,255,255,.50)';
     ctx.font = '26px system-ui, sans-serif';
-    ctx.fillText(`角色匹配度 ${score}%`, 86, y + 10);
-    y += 82;
+    ctx.fillText(`剧情匹配度 ${score}%`, 86, y + 10);
+    y += 62;
 
     DIMENSIONS.forEach((dim, i) => {
       ctx.fillStyle = 'rgba(255,255,255,.72)';
@@ -162,28 +163,31 @@ export default function Results({ result, onRestart }: ResultsProps) {
       ctx.fillStyle = '#FFFFFF';
       ctx.font = 'bold 24px system-ui, sans-serif';
       ctx.fillText(String(userCoords[i]), 900, y);
-      y += 58;
+      y += 48;
     });
 
-    y += 30;
+    y += 18;
     ctx.fillStyle = 'rgba(255,255,255,.42)';
     ctx.font = '24px system-ui, sans-serif';
-    ctx.fillText('角色台词', 86, y);
-    y += 58;
+    ctx.fillText('这一条剧情里的你', 86, y);
+    y += 44;
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 39px system-ui, sans-serif';
-    y = wrapCanvasText(ctx, `“${role.quote}”`, 86, y, 870, 58, 3);
+    ctx.font = 'bold 32px system-ui, sans-serif';
+    y = wrapCanvasText(ctx, `“${role.quote}”`, 86, y, 870, 48, 3);
 
     ctx.fillStyle = 'rgba(255,255,255,.40)';
     ctx.font = '23px system-ui, sans-serif';
     ctx.fillStyle = 'rgba(255,255,255,.30)';
     ctx.font = '22px system-ui, sans-serif';
-    ctx.fillText(`隐藏副角色：${secondaryRole?.name ?? '—'}`, 86, 1260);
+    ctx.fillText('另一条接近的剧情：', 86, 1236);
+    ctx.font = '24px system-ui, sans-serif';
+    wrapCanvasText(ctx, secondaryRole?.name ?? '—', 86, 1274, 860, 34, 2);
+    ctx.font = '22px system-ui, sans-serif';
     ctx.fillText(role.tags.map((t) => `#${t}`).join('   '), 86, 1322);
-    ctx.fillText('28幕剧本角色测试 · 娱乐互动结果', 86, 1362);
+    ctx.fillText('32题恋爱剧情测试 · 测试结果仅供娱乐', 86, 1362);
 
     const link = document.createElement('a');
-    link.download = `剧本角色测试-${role.name}.png`;
+    link.download = `恋爱剧情测试-${role.id}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   };
@@ -191,8 +195,8 @@ export default function Results({ result, onRestart }: ResultsProps) {
   return (
     <section className="results-screen" style={{ '--accent': role.accent } as CSSProperties}>
       <div className="result-hero">
-        <div className="result-eyebrow">YOUR STORY ROLE</div>
-        <div className="result-score">匹配度 {score}%</div>
+        <div className="result-eyebrow">YOUR LOVE STORY</div>
+        <div className="result-score">剧情匹配度 {score}%</div>
         <h1>{role.name}</h1>
         <p className="result-tagline">{role.tagline}</p>
         <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
@@ -200,37 +204,37 @@ export default function Results({ result, onRestart }: ResultsProps) {
 
       <div className="result-content">
         <section className="story-section lead-section">
-          <div className="section-kicker">你这个角色，为什么像你</div>
+          <div className="section-kicker">为什么你最容易走进这条剧情</div>
           <p>{role.summary}</p>
         </section>
 
         <section className="dossier-grid">
           <article className="dossier-card">
-            <span>别人第一眼</span>
+            <span>刚开始喜欢时</span>
             <p>{firstImpression(userCoords)}</p>
           </article>
           <article className="dossier-card">
-            <span>压力一上来</span>
+            <span>关系一变模糊</span>
             <p>{pressureMode(userCoords)}</p>
           </article>
           <article className="dossier-card accent-card">
-            <span>你最亮的一条线</span>
+            <span>你最明显的一条线</span>
             <strong>{DIMENSIONS[strongestIndex].label}</strong>
             <p>{dimensionCopy(strongestIndex, userCoords[strongestIndex])}</p>
           </article>
           <article className="dossier-card">
-            <span>别人最容易看错</span>
+            <span>你最容易忽略</span>
             <p>{role.reversal}</p>
           </article>
         </section>
 
         <section className="story-section">
-          <div className="section-kicker">你的五维角色图</div>
+          <div className="section-kicker">你的关系五维图</div>
           <RadarChart values={userCoords} accent={role.accent} />
         </section>
 
         <section className="story-section dimension-story-section">
-          <div className="section-kicker">把五维翻译成人话</div>
+          <div className="section-kicker">这五条线放进关系里是什么样</div>
           <div className="dimension-story-list">
             {DIMENSIONS.map((dimension, i) => (
               <article key={dimension.label} className={i === strongestIndex ? 'is-strongest' : i === quietestIndex ? 'is-quietest' : ''}>
@@ -246,15 +250,15 @@ export default function Results({ result, onRestart }: ResultsProps) {
 
         <section className="story-grid">
           <article className="story-section">
-            <div className="section-kicker">放进剧本里</div>
+            <div className="section-kicker">这条剧情通常怎么开始</div>
             <p>{role.story}</p>
           </article>
           <article className="story-section">
-            <div className="section-kicker">关系线</div>
+            <div className="section-kicker">什么样的关系更适合你</div>
             <p>{role.relation}</p>
           </article>
           <article className="story-section">
-            <div className="section-kicker">人物反转</div>
+            <div className="section-kicker">最容易踩的坑</div>
             <p>{role.reversal}</p>
           </article>
         </section>
@@ -263,17 +267,17 @@ export default function Results({ result, onRestart }: ResultsProps) {
 
         {secondaryRole && (
           <section className="secondary-role-card">
-            <div className="secondary-role-topline">HIDDEN ROUTE · 你的另一条剧情线</div>
+            <div className="secondary-role-topline">SECOND ROUTE · 你也很接近这条剧情</div>
             <div className="secondary-role-name">{secondaryRole.name}</div>
             <p>{secondaryRole.tagline}</p>
             <small>
-              你和它的距离也很近。也就是说，在不同环境、不同关系或压力状态下，你可能会从「{role.name}」切到「{secondaryRole.name}」。
+              你的答案和这条剧情也很接近。换一个人、换一个关系阶段，或者当下状态不同，你的表现可能会更像这一条。
             </small>
           </section>
         )}
 
         <section className="story-section">
-          <div className="section-kicker">你的角色候选席</div>
+          <div className="section-kicker">最接近你的三条剧情</div>
           <div className="top-three">
             {top3.map((item, i) => (
               <div className={`rank-card ${i === 0 ? 'current' : ''}`} key={item.role.id}>
@@ -286,12 +290,12 @@ export default function Results({ result, onRestart }: ResultsProps) {
         </section>
 
         <div className="result-actions">
-          <button className="primary-button" onClick={downloadCard}>保存小红书角色卡</button>
+          <button className="primary-button" onClick={downloadCard}>保存小红书结果卡</button>
           <button className="secondary-button" onClick={copyResult}>{copied ? '已复制' : '复制结果文案'}</button>
           <button className="text-button" onClick={onRestart}>重新测一次</button>
         </div>
 
-        <p className="disclaimer">这是娱乐型互动角色测试，不用于心理诊断或专业人格评估。</p>
+        <p className="disclaimer">测试结果仅供娱乐</p>
       </div>
     </section>
   );

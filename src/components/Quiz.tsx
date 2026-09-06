@@ -12,7 +12,7 @@ interface QuizProps {
 export default function Quiz({ question, index, total, onAnswer, onBack }: QuizProps) {
   const [selected, setSelected] = useState<number | null>(null);
   const progress = Math.round(((index + 1) / total) * 100);
-  const chapter = index < 6 ? '开场' : index < 12 ? '关系' : index < 18 ? '转折' : index < 24 ? '深水区' : '终局';
+  const chapter = index < 1 ? '状态' : index < 11 ? '读信号' : index < 20 ? '靠近' : index < 25 ? '表达' : '深水区';
 
   const choose = (optionIndex: number, vector: Vec5) => {
     if (selected !== null) return;
@@ -45,7 +45,7 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
 
       <div className="quiz-stage-card">
         <div className="scene-stamp">SCENE {String(index + 1).padStart(2, '0')}</div>
-        <div className="scene-kicker">如果这一幕真的发生在你身上</div>
+        <div className="scene-kicker">别选“应该怎么做”，选你更像怎么做</div>
         <h2>{question.text}</h2>
 
         <div className="option-list mobile-options">

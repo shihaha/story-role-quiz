@@ -26,7 +26,7 @@ export default function App() {
     if (index >= QUESTIONS.length - 1) {
       const coords = averageVectors(next);
       setAnswers(next);
-      setResult(buildResult(coords));
+      setResult(buildResult(coords, next));
       setStage('results');
       setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
       return;

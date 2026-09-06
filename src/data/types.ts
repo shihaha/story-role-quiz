@@ -1,4 +1,5 @@
-export type Vec5 = [number, number, number, number, number];
+export type Vec5 = [number | null, number | null, number | null, number | null, number | null];
+export type ScoreVec5 = [number, number, number, number, number];
 
 export interface Option {
   text: string;
@@ -14,7 +15,7 @@ export interface Question {
 export interface Role {
   id: string;
   name: string;
-  coords: Vec5;
+  coords: ScoreVec5;
   accent: string;
   tagline: string;
   summary: string;
@@ -26,11 +27,11 @@ export interface Role {
 }
 
 export const DIMENSIONS = [
-  { label: '掌控感', low: '随势', high: '控场' },
-  { label: '情绪张力', low: '内收', high: '外显' },
-  { label: '行动欲', low: '观望', high: '先手' },
-  { label: '规则感', low: '反骨', high: '守序' },
-  { label: '人群位置', low: '边缘', high: '中心' },
+  { label: '关系警觉', low: '放松', high: '容易警觉' },
+  { label: '亲密距离', low: '愿意靠近', high: '需要空间' },
+  { label: '信号敏感', low: '不易多想', high: '容易捕捉变化' },
+  { label: '靠近行动', low: '等回应', high: '会往前走' },
+  { label: '情绪表达', low: '说出来', high: '藏起来' },
 ] as const;
 
 export type Stage = 'intro' | 'quiz' | 'results';
