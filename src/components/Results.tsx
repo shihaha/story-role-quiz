@@ -309,27 +309,6 @@ export default function Results({ result, onRestart }: ResultsProps) {
           <p>{role.reversal}</p>
         </section>
 
-        <section className="related-section">
-          <div className="section-kicker">你可能也会喜欢的内容</div>
-          <div className="related-list">
-            <article>
-              <img src="/assets/related-tulip.jpg" alt="柔光中的粉色郁金香" />
-              <div><strong>当你开始犹豫，其实是在害怕什么？</strong><span>看懂靠近之后的退缩</span></div>
-              <b>›</b>
-            </article>
-            <article>
-              <img src="/assets/cover-romance.jpg" alt="女孩和猫在窗边" />
-              <div><strong>如何在亲密关系里保持自己？</strong><span>靠近，不等于失去边界</span></div>
-              <b>›</b>
-            </article>
-            <article>
-              <img src="/assets/related-city.jpg" alt="粉色晚霞与城市天际线" />
-              <div><strong>从暧昧到稳定，需要哪些信号？</strong><span>别让关系永远停在猜测里</span></div>
-              <b>›</b>
-            </article>
-          </div>
-        </section>
-
         <section className="story-section lead-section">
           <div className="section-kicker">为什么你最容易走进这条剧情</div>
           <p>{role.summary}</p>

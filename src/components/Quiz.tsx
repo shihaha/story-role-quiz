@@ -44,9 +44,11 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
       </div>
 
       <div className="quiz-stage-card">
-        <div className="scene-stamp">{chapter} · 第 {index + 1} 题</div>
-        <div className="scene-kicker">按第一反应选，不用想“正确答案”</div>
-        <h2>{question.text}</h2>
+        <div className="question-copy-zone">
+          <div className="scene-stamp">{chapter} · 第 {index + 1} 题</div>
+          <div className="scene-kicker">按第一反应选，不用想“正确答案”</div>
+          <h2>{question.text}</h2>
+        </div>
 
         <div className="option-list mobile-options">
           {question.options.map((option, i) => (
