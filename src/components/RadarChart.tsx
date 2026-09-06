@@ -1,8 +1,8 @@
 import { DIMENSIONS } from '../data/types';
-import type { Vec5 } from '../data/types';
+import type { ScoreVec5 } from '../data/types';
 
 interface RadarProps {
-  values: Vec5;
+  values: ScoreVec5;
   accent: string;
 }
 
@@ -26,19 +26,19 @@ export default function RadarChart({ values, accent }: RadarProps) {
             key={level}
             points={DIMENSIONS.map((_, i) => point(i, level).join(',')).join(' ')}
             fill="none"
-            stroke="rgba(255,255,255,.10)"
+            stroke="rgba(94,71,88,.12)"
             strokeWidth="1"
           />
         ))}
         {DIMENSIONS.map((_, i) => {
           const [x, y] = point(i, 10);
-          return <line key={i} x1={center} y1={center} x2={x} y2={y} stroke="rgba(255,255,255,.08)" />;
+          return <line key={i} x1={center} y1={center} x2={x} y2={y} stroke="rgba(94,71,88,.09)" />;
         })}
-        <polygon points={outer} fill="none" stroke="rgba(255,255,255,.12)" />
-        <polygon points={data} fill={`${accent}22`} stroke={accent} strokeWidth="2" />
+        <polygon points={outer} fill="none" stroke="rgba(94,71,88,.14)" />
+        <polygon points={data} fill="rgba(244,102,139,.16)" stroke="#ef6688" strokeWidth="2.4" />
         {values.map((v, i) => {
           const [x, y] = point(i, v);
-          return <circle key={i} cx={x} cy={y} r="3.5" fill={accent} />;
+          return <circle key={i} cx={x} cy={y} r="3.5" fill="#ef6688" />;
         })}
       </svg>
       <div className="dimension-list">

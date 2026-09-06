@@ -195,16 +195,25 @@ export default function Results({ result, onRestart }: ResultsProps) {
   return (
     <section className="results-screen" style={{ '--accent': role.accent } as CSSProperties}>
       <div className="result-hero">
-        <div className="result-eyebrow">YOUR LOVE STORY</div>
-        <div className="result-score">剧情匹配度 {score}%</div>
-        <h1>{role.name}</h1>
-        <p className="result-tagline">{role.tagline}</p>
-        <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        <div className="result-hero-inner">
+          <div className="result-eyebrow">你的恋爱剧情是</div>
+          <div className="result-score">匹配度 {score}%</div>
+          <h1>{role.name}</h1>
+          <p className="result-tagline">“{role.tagline}”</p>
+          <div className="result-art-card">
+            <img src="/result-romance.svg" alt="恋爱剧情结果插画" />
+          </div>
+          <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+        </div>
       </div>
 
       <div className="result-content">
         <section className="story-section lead-section">
-          <div className="section-kicker">为什么你最容易走进这条剧情</div>
+          <div className="section-kicker">你的剧情关键词</div>
+          <div className="result-keyword-row">
+            {role.tags.map((tag) => <span key={`key-${tag}`}>{tag}</span>)}
+          </div>
+          <div className="section-kicker section-kicker-spaced">为什么你最容易走进这条剧情</div>
           <p>{role.summary}</p>
         </section>
 

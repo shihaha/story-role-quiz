@@ -11,14 +11,14 @@ interface QuizProps {
 
 export default function Quiz({ question, index, total, onAnswer, onBack }: QuizProps) {
   const [selected, setSelected] = useState<number | null>(null);
+  const [selectedVector, setSelectedVector] = useState<Vec5 | null>(null);
   const progress = Math.round(((index + 1) / total) * 100);
   const chapter = index < 1 ? '状态' : index < 11 ? '读信号' : index < 20 ? '靠近' : index < 25 ? '表达' : '深水区';
 
   const choose = (optionIndex: number, vector: Vec5) => {
-    if (selected !== null) return;
     setSelected(optionIndex);
+    setSelectedVector(vector);
     if ('vibrate' in navigator) navigator.vibrate?.(18);
-    window.setTimeout(() => onAnswer(vector), 180);
   };
 
   return (
@@ -44,8 +44,8 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
       </div>
 
       <div className="quiz-stage-card">
-        <div className="scene-stamp">SCENE {String(index + 1).padStart(2, '0')}</div>
-        <div className="scene-kicker">别选“应该怎么做”，选你更像怎么做</div>
+        <div className="scene-stamp">{chapter} · 第 {index + 1} 题</div>
+        <div className="scene-kicker">按第一反应选，不用想“正确答案”</div>
         <h2>{question.text}</h2>
 
         <div className="option-list mobile-options">
@@ -54,7 +54,6 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
               key={i}
               className={`option-button ${selected === i ? 'is-selected' : ''} ${selected !== null && selected !== i ? 'is-muted' : ''}`}
               onClick={() => choose(i, option.vector)}
-              disabled={selected !== null}
             >
               <span className="option-index">{String.fromCharCode(65 + i)}</span>
               <span className="option-copy">{option.text}</span>
@@ -62,10 +61,18 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
             </button>
           ))}
         </div>
+
+        <button
+          className="quiz-next-button"
+          disabled={!selectedVector}
+          onClick={() => selectedVector && onAnswer(selectedVector)}
+        >
+          {index === total - 1 ? '查看我的结果' : '下一题'} <span>→</span>
+        </button>
       </div>
 
       <footer className="mobile-quiz-footer">
-        <div className="instinct-chip"><span>◉</span> 第一反应通常更像你</div>
+        <div className="instinct-chip"><span>♡</span> 慢慢来，你会更了解自己</div>
         <div className="chapter-dots" aria-hidden="true">
           {[0, 1, 2, 3, 4].map((item) => (
             <span key={item} className={Math.min(4, Math.floor(index / 6)) >= item ? 'active' : ''} />
