@@ -110,6 +110,20 @@ const RESULT_SPRITE_INDEX: Record<string, number> = {
   'solve-it-now': 10,
   'need-a-real-ending': 11,
 };
+const RESULT_TITLE_FOCUS: Record<string, string> = {
+  'steady-after-mutual': '越谈越稳',
+  'slow-to-start': '很少贸然开始',
+  'keep-self': '不会把自己全搭进去',
+  'need-to-know': '越想知道对方怎么想',
+  'cooling-means-something': '重新判断整段关系',
+  'wait-for-clearer-signal': '再确定一点',
+  'best-in-ambiguity': '真的靠近以后反而开始犹豫',
+  'pull-away-when-chased': '越容易想退',
+  'leave-before-rejection': '比对方更早退出',
+  'fine-but-not-fine': '心里其实还在记着',
+  'solve-it-now': '马上把话说清楚',
+  'need-a-real-ending': '一个真正的句号',
+};
 
 function storySpritePosition(index: number) {
   const column = index % 4;
@@ -158,6 +172,10 @@ export default function Results({ result, onRestart }: ResultsProps) {
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
   const storyIndex = RESULT_SPRITE_INDEX[role.id] ?? 0;
   const storyBackgroundPosition = storySpritePosition(storyIndex);
+  const titleFocus = RESULT_TITLE_FOCUS[role.id] ?? '';
+  const focusIndex = titleFocus ? role.name.indexOf(titleFocus) : -1;
+  const titleBefore = focusIndex >= 0 ? role.name.slice(0, focusIndex) : role.name;
+  const titleAfter = focusIndex >= 0 ? role.name.slice(focusIndex + titleFocus.length) : '';
 
   const resultText = `我最容易陷入的恋爱剧情是：\n【${role.name}】\n${role.tagline}\n\n“${role.quote}”`;
 
@@ -297,9 +315,16 @@ export default function Results({ result, onRestart }: ResultsProps) {
     <section className="results-screen" style={{ '--accent': role.accent } as CSSProperties}>
       <div className="result-hero">
         <div className="result-hero-inner">
-          <div className="result-eyebrow">你的恋爱剧情是</div>
-          <div className="result-score">匹配度 {score}%</div>
-          <h1>{role.name}</h1>
+          <div className="result-meta-row">
+            <div className="result-eyebrow">你的恋爱剧情</div>
+            <div className="result-score">匹配度 {score}%</div>
+          </div>
+          <div className="result-keyword">{role.tags[0]}</div>
+          <h1>
+            {titleBefore}
+            {focusIndex >= 0 && <span className="result-title-focus">{titleFocus}</span>}
+            {titleAfter}
+          </h1>
           <p className="result-tagline">“{role.tagline}”</p>
           <div className="result-art-card">
             <div

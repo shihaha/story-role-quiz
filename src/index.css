@@ -595,29 +595,90 @@ body {
   background: radial-gradient(circle at 18% 8%, rgba(248, 156, 181, .28), transparent 230px), linear-gradient(180deg, #fff9fb 0%, #fff 100%);
 }
 .result-hero-inner { width: 100%; margin: 0 auto; }
-.result-eyebrow { color: #8b7888; font-size: 12px; letter-spacing: .08em; text-transform: none; }
+.result-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 28px;
+  margin-bottom: 16px;
+}
+.result-eyebrow {
+  color: #9b8794;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: none;
+}
 .result-score {
   display: inline-flex;
-  margin-top: 12px;
-  padding: 6px 11px;
-  border: 0;
+  margin: 0;
+  padding: 5px 10px;
+  border: 1px solid #f4d6df;
   border-radius: 999px;
-  background: #fff0f4;
-  color: #e35a7c;
-  font-size: 11px;
+  background: rgba(255,255,255,.8);
+  color: #df5879;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+.result-keyword {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  margin: 0 auto 11px;
+  padding: 6px 14px 6px 34px;
+  border-radius: 999px;
+  background: #e85f80;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(224, 83, 119, .18);
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: .06em;
+}
+.result-keyword::before {
+  content: '剧情';
+  position: absolute;
+  left: 8px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 .result-hero h1 {
-  margin: 18px auto 8px;
-  max-width: 365px;
-  color: #d95175;
-  font-size: clamp(31px, 9vw, 43px);
-  line-height: 1.22;
-  letter-spacing: -.04em;
+  margin: 0 auto 10px;
+  max-width: 370px;
+  color: #4f3f49;
+  font-size: clamp(30px, 8.5vw, 41px);
+  line-height: 1.28;
+  letter-spacing: -.035em;
   text-wrap: balance;
   font-family: "Kaiti SC", STKaiti, KaiTi, serif;
   font-weight: 650;
 }
-.result-tagline { max-width: 355px; margin: 8px auto 18px; color: #8e7482; font-size: 14px; line-height: 1.7; }
+.result-title-focus {
+  position: relative;
+  display: inline;
+  padding: 0 .06em;
+  color: #df4f73;
+  font-weight: 850;
+  background: linear-gradient(180deg, transparent 60%, rgba(244, 113, 146, .22) 60%, rgba(244, 113, 146, .22) 92%, transparent 92%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.result-tagline {
+  max-width: 345px;
+  margin: 8px auto 18px;
+  color: #927f8b;
+  font-size: 13px;
+  line-height: 1.7;
+}
 .result-art-card {
   position: relative;
   overflow: visible;
