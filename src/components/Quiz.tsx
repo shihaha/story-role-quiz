@@ -11,14 +11,14 @@ interface QuizProps {
 
 export default function Quiz({ question, index, total, onAnswer, onBack }: QuizProps) {
   const [selected, setSelected] = useState<number | null>(null);
-  const [selectedVector, setSelectedVector] = useState<Vec5 | null>(null);
   const progress = Math.round(((index + 1) / total) * 100);
   const chapter = index < 1 ? '状态' : index < 11 ? '读信号' : index < 20 ? '靠近' : index < 25 ? '表达' : '深水区';
 
   const choose = (optionIndex: number, vector: Vec5) => {
+    if (selected !== null) return;
     setSelected(optionIndex);
-    setSelectedVector(vector);
     if ('vibrate' in navigator) navigator.vibrate?.(18);
+    window.setTimeout(() => onAnswer(vector), 160);
   };
 
   return (
@@ -54,6 +54,7 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
               key={i}
               className={`option-button ${selected === i ? 'is-selected' : ''} ${selected !== null && selected !== i ? 'is-muted' : ''}`}
               onClick={() => choose(i, option.vector)}
+              disabled={selected !== null}
             >
               <span className="option-index">{String.fromCharCode(65 + i)}</span>
               <span className="option-copy">{option.text}</span>
@@ -61,14 +62,6 @@ export default function Quiz({ question, index, total, onAnswer, onBack }: QuizP
             </button>
           ))}
         </div>
-
-        <button
-          className="quiz-next-button"
-          disabled={!selectedVector}
-          onClick={() => selectedVector && onAnswer(selectedVector)}
-        >
-          {index === total - 1 ? '查看我的结果' : '下一题'} <span>→</span>
-        </button>
       </div>
 
       <footer className="mobile-quiz-footer">

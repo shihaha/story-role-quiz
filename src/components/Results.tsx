@@ -1,6 +1,5 @@
 import { useState, type CSSProperties } from 'react';
 import RadarChart from './RadarChart';
-import { DIMENSIONS } from '../data/types';
 import type { MatchResult } from '../utils/matching';
 
 interface ResultsProps {
@@ -88,13 +87,47 @@ function wrapCanvasText(
   return y + lineHeight;
 }
 
+function loadRasterImage(src: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+function drawCoverImage(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  const imageRatio = image.width / image.height;
+  const boxRatio = width / height;
+  let sourceX = 0;
+  let sourceY = 0;
+  let sourceWidth = image.width;
+  let sourceHeight = image.height;
+
+  if (imageRatio > boxRatio) {
+    sourceWidth = image.height * boxRatio;
+    sourceX = (image.width - sourceWidth) / 2;
+  } else {
+    sourceHeight = image.width / boxRatio;
+    sourceY = (image.height - sourceHeight) / 2;
+  }
+
+  ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+}
+
 export default function Results({ result, onRestart }: ResultsProps) {
   const { role, score, userCoords, ranking } = result;
   const [copied, setCopied] = useState(false);
   const top3 = ranking.slice(0, 3);
   const secondaryRole = ranking[1]?.role;
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
-  const quietestIndex = userCoords.indexOf(Math.min(...userCoords));
 
   const resultText = `我最容易陷入的恋爱剧情是：\n【${role.name}】\n${role.tagline}\n\n“${role.quote}”`;
 
@@ -108,83 +141,121 @@ export default function Results({ result, onRestart }: ResultsProps) {
     }
   };
 
-  const downloadCard = () => {
+  const downloadCard = async () => {
     const canvas = document.createElement('canvas');
     canvas.width = 1080;
     canvas.height = 1440;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const bg = ctx.createLinearGradient(0, 0, 1080, 1350);
-    bg.addColorStop(0, '#101116');
-    bg.addColorStop(1, '#06070A');
+    const bg = ctx.createLinearGradient(0, 0, 1080, 1440);
+    bg.addColorStop(0, '#FFF8FA');
+    bg.addColorStop(0.62, '#FFFDFD');
+    bg.addColorStop(1, '#F8F1FA');
     ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, 1080, 1350);
+    ctx.fillRect(0, 0, 1080, 1440);
 
-    const glow = ctx.createRadialGradient(850, 220, 0, 850, 220, 620);
-    glow.addColorStop(0, `${role.accent}55`);
-    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    const glow = ctx.createRadialGradient(820, 160, 0, 820, 160, 620);
+    glow.addColorStop(0, 'rgba(245,112,151,.22)');
+    glow.addColorStop(1, 'rgba(245,112,151,0)');
     ctx.fillStyle = glow;
-    ctx.fillRect(0, 0, 1080, 900);
+    ctx.fillRect(0, 0, 1080, 700);
 
-    ctx.strokeStyle = 'rgba(255,255,255,.12)';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(54, 54, 972, 1332);
+    ctx.fillStyle = '#9B8795';
+    ctx.font = '24px system-ui, sans-serif';
+    ctx.fillText('LOVE STORY TEST · 32 SCENES', 72, 92);
 
-    ctx.fillStyle = 'rgba(255,255,255,.55)';
-    ctx.font = '28px system-ui, sans-serif';
-    ctx.fillText('LOVE STORY TEST', 86, 120);
-
-    ctx.fillStyle = 'rgba(255,255,255,.75)';
-    ctx.font = '34px system-ui, sans-serif';
-    ctx.fillText('你最容易陷入哪种恋爱剧情？', 86, 205);
-
-    ctx.fillStyle = role.accent;
-    ctx.font = 'bold 58px system-ui, sans-serif';
-    let y = wrapCanvasText(ctx, role.name, 86, 315, 900, 72, 3);
-
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#5F4E5B';
     ctx.font = '30px system-ui, sans-serif';
-    y = wrapCanvasText(ctx, role.tagline, 86, y + 18, 880, 46, 3);
+    ctx.fillText('你的恋爱剧情是', 72, 154);
 
-    ctx.fillStyle = 'rgba(255,255,255,.50)';
-    ctx.font = '26px system-ui, sans-serif';
-    ctx.fillText(`剧情匹配度 ${score}%`, 86, y + 10);
-    y += 62;
+    ctx.fillStyle = '#D95377';
+    ctx.font = '600 62px "Kaiti SC", KaiTi, serif';
+    let y = wrapCanvasText(ctx, role.name, 72, 236, 936, 76, 3);
 
-    DIMENSIONS.forEach((dim, i) => {
-      ctx.fillStyle = 'rgba(255,255,255,.72)';
-      ctx.font = '25px system-ui, sans-serif';
-      ctx.fillText(dim.label, 86, y);
-      ctx.fillStyle = 'rgba(255,255,255,.12)';
-      ctx.fillRect(260, y - 20, 610, 18);
-      ctx.fillStyle = role.accent;
-      ctx.fillRect(260, y - 20, 610 * (userCoords[i] / 10), 18);
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 24px system-ui, sans-serif';
-      ctx.fillText(String(userCoords[i]), 900, y);
-      y += 48;
+    ctx.fillStyle = '#8D7582';
+    ctx.font = '28px system-ui, sans-serif';
+    y = wrapCanvasText(ctx, `“${role.tagline}”`, 72, y + 2, 920, 42, 2);
+
+    ctx.fillStyle = '#E25D7E';
+    ctx.font = 'bold 23px system-ui, sans-serif';
+    ctx.fillText(`匹配度 ${score}%`, 72, y + 8);
+
+    const imageY = y + 48;
+    const imageX = 72;
+    const imageWidth = 936;
+    const imageHeight = 500;
+
+    try {
+      const image = await loadRasterImage('/assets/result-romance.jpg');
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(imageX, imageY, imageWidth, imageHeight, 34);
+      ctx.clip();
+      drawCoverImage(ctx, image, imageX, imageY, imageWidth, imageHeight);
+      ctx.restore();
+    } catch {
+      const fallback = ctx.createLinearGradient(imageX, imageY, imageX + imageWidth, imageY + imageHeight);
+      fallback.addColorStop(0, '#E6CBE5');
+      fallback.addColorStop(1, '#F5A7B6');
+      ctx.fillStyle = fallback;
+      ctx.beginPath();
+      ctx.roundRect(imageX, imageY, imageWidth, imageHeight, 34);
+      ctx.fill();
+    }
+
+    const noteX = 520;
+    const noteY = imageY + 390;
+    ctx.save();
+    ctx.translate(noteX + 210, noteY + 70);
+    ctx.rotate(0.025);
+    ctx.translate(-(noteX + 210), -(noteY + 70));
+    ctx.fillStyle = 'rgba(255,247,242,.97)';
+    ctx.beginPath();
+    ctx.roundRect(noteX, noteY, 420, 150, 16);
+    ctx.fill();
+    ctx.fillStyle = '#865F67';
+    ctx.font = '28px "Kaiti SC", KaiTi, serif';
+    wrapCanvasText(ctx, role.quote, noteX + 24, noteY + 46, 372, 38, 3);
+    ctx.restore();
+
+    const tagsY = imageY + imageHeight + 72;
+    let tagX = 72;
+    ctx.font = '24px system-ui, sans-serif';
+    role.tags.slice(0, 4).forEach((tag) => {
+      const width = ctx.measureText(tag).width + 44;
+      ctx.fillStyle = '#FFF0F4';
+      ctx.beginPath();
+      ctx.roundRect(tagX, tagsY, width, 48, 24);
+      ctx.fill();
+      ctx.fillStyle = '#D65A79';
+      ctx.fillText(tag, tagX + 22, tagsY + 32);
+      tagX += width + 14;
     });
 
-    y += 18;
-    ctx.fillStyle = 'rgba(255,255,255,.42)';
-    ctx.font = '24px system-ui, sans-serif';
-    ctx.fillText('这一条剧情里的你', 86, y);
-    y += 44;
-    ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 32px system-ui, sans-serif';
-    y = wrapCanvasText(ctx, `“${role.quote}”`, 86, y, 870, 48, 3);
+    ctx.fillStyle = '#5A4958';
+    ctx.font = 'bold 27px system-ui, sans-serif';
+    ctx.fillText('在感情里，你可能会……', 72, tagsY + 108);
 
-    ctx.fillStyle = 'rgba(255,255,255,.40)';
-    ctx.font = '23px system-ui, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,.30)';
-    ctx.font = '22px system-ui, sans-serif';
-    ctx.fillText('另一条接近的剧情：', 86, 1236);
+    ctx.fillStyle = '#746471';
     ctx.font = '24px system-ui, sans-serif';
-    wrapCanvasText(ctx, secondaryRole?.name ?? '—', 86, 1274, 860, 34, 2);
-    ctx.font = '22px system-ui, sans-serif';
-    ctx.fillText(role.tags.map((t) => `#${t}`).join('   '), 86, 1322);
-    ctx.fillText('32题恋爱剧情测试 · 测试结果仅供娱乐', 86, 1362);
+    const bullets = [firstImpression(userCoords), pressureMode(userCoords)];
+    let bulletY = tagsY + 158;
+    bullets.forEach((text) => {
+      ctx.fillStyle = '#EE6788';
+      ctx.beginPath();
+      ctx.arc(82, bulletY - 7, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#746471';
+      bulletY = wrapCanvasText(ctx, text, 106, bulletY, 860, 36, 2) + 10;
+    });
+
+    ctx.fillStyle = '#B3A2AE';
+    ctx.font = '21px system-ui, sans-serif';
+    ctx.fillText('测试结果仅供娱乐', 72, 1378);
+    ctx.textAlign = 'right';
+    ctx.fillText('你最容易陷入哪种恋爱剧情？', 1008, 1378);
+    ctx.textAlign = 'left';
 
     const link = document.createElement('a');
     link.download = `恋爱剧情测试-${role.id}.png`;
@@ -201,60 +272,67 @@ export default function Results({ result, onRestart }: ResultsProps) {
           <h1>{role.name}</h1>
           <p className="result-tagline">“{role.tagline}”</p>
           <div className="result-art-card">
-            <img src="/result-romance.svg" alt="恋爱剧情结果插画" />
+            <img src="/assets/result-romance.jpg" alt="粉色暮光中的恋爱剧情氛围图" />
+            <div className="result-photo-note">{role.quote}</div>
           </div>
           <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         </div>
       </div>
 
       <div className="result-content">
-        <section className="story-section lead-section">
-          <div className="section-kicker">你的剧情关键词</div>
-          <div className="result-keyword-row">
-            {role.tags.map((tag) => <span key={`key-${tag}`}>{tag}</span>)}
-          </div>
-          <div className="section-kicker section-kicker-spaced">为什么你最容易走进这条剧情</div>
-          <p>{role.summary}</p>
+        <section className="result-quick-summary">
+          <div className="section-kicker">在感情里，你可能会……</div>
+          <ul className="result-bullets">
+            <li>{firstImpression(userCoords)}</li>
+            <li>{pressureMode(userCoords)}</li>
+            <li>{dimensionCopy(strongestIndex, userCoords[strongestIndex])}</li>
+          </ul>
         </section>
 
-        <section className="dossier-grid">
-          <article className="dossier-card">
-            <span>刚开始喜欢时</span>
-            <p>{firstImpression(userCoords)}</p>
-          </article>
-          <article className="dossier-card">
-            <span>关系一变模糊</span>
-            <p>{pressureMode(userCoords)}</p>
-          </article>
-          <article className="dossier-card accent-card">
-            <span>你最明显的一条线</span>
-            <strong>{DIMENSIONS[strongestIndex].label}</strong>
-            <p>{dimensionCopy(strongestIndex, userCoords[strongestIndex])}</p>
-          </article>
-          <article className="dossier-card">
-            <span>你最容易忽略</span>
-            <p>{role.reversal}</p>
-          </article>
-        </section>
+        <div className="result-actions result-actions-primary">
+          <button className="primary-button" onClick={downloadCard}>分享我的结果</button>
+          <button className="secondary-button" onClick={onRestart}>重新测试</button>
+        </div>
 
-        <section className="story-section">
-          <div className="section-kicker">你的关系五维图</div>
+        <div className="detail-heading">
+          <span>更了解你</span>
+          <p>下面是你的关系倾向和更具体的解释</p>
+        </div>
+
+        <section className="story-section tendency-section">
+          <div className="section-kicker">你的恋爱倾向</div>
           <RadarChart values={userCoords} accent={role.accent} />
         </section>
 
-        <section className="story-section dimension-story-section">
-          <div className="section-kicker">这五条线放进关系里是什么样</div>
-          <div className="dimension-story-list">
-            {DIMENSIONS.map((dimension, i) => (
-              <article key={dimension.label} className={i === strongestIndex ? 'is-strongest' : i === quietestIndex ? 'is-quietest' : ''}>
-                <div>
-                  <strong>{dimension.label}</strong>
-                  <span>{userCoords[i]} / 10</span>
-                </div>
-                <p>{dimensionCopy(i, userCoords[i])}</p>
-              </article>
-            ))}
+        <section className="advice-card">
+          <div className="advice-title"><span>♥</span> 给你的一个小建议</div>
+          <p>{role.reversal}</p>
+        </section>
+
+        <section className="related-section">
+          <div className="section-kicker">你可能也会喜欢的内容</div>
+          <div className="related-list">
+            <article>
+              <img src="/assets/related-tulip.jpg" alt="柔光中的粉色郁金香" />
+              <div><strong>当你开始犹豫，其实是在害怕什么？</strong><span>看懂靠近之后的退缩</span></div>
+              <b>›</b>
+            </article>
+            <article>
+              <img src="/assets/cover-romance.jpg" alt="女孩和猫在窗边" />
+              <div><strong>如何在亲密关系里保持自己？</strong><span>靠近，不等于失去边界</span></div>
+              <b>›</b>
+            </article>
+            <article>
+              <img src="/assets/related-city.jpg" alt="粉色晚霞与城市天际线" />
+              <div><strong>从暧昧到稳定，需要哪些信号？</strong><span>别让关系永远停在猜测里</span></div>
+              <b>›</b>
+            </article>
           </div>
+        </section>
+
+        <section className="story-section lead-section">
+          <div className="section-kicker">为什么你最容易走进这条剧情</div>
+          <p>{role.summary}</p>
         </section>
 
         <section className="story-grid">
@@ -298,10 +376,8 @@ export default function Results({ result, onRestart }: ResultsProps) {
           </div>
         </section>
 
-        <div className="result-actions">
-          <button className="primary-button" onClick={downloadCard}>保存小红书结果卡</button>
+        <div className="result-actions result-actions-secondary">
           <button className="secondary-button" onClick={copyResult}>{copied ? '已复制' : '复制结果文案'}</button>
-          <button className="text-button" onClick={onRestart}>重新测一次</button>
         </div>
 
         <p className="disclaimer">测试结果仅供娱乐</p>
