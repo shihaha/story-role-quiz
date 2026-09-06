@@ -40,10 +40,16 @@ export default function App() {
       {stage === 'intro' && <Intro onStart={start} />}
       {stage === 'quiz' && (
         <Quiz
+          key={index}
           question={QUESTIONS[index]}
           index={index}
           total={QUESTIONS.length}
           onAnswer={choose}
+          onBack={() => {
+            if (index <= 0) return;
+            setAnswers((prev) => prev.slice(0, -1));
+            setIndex((v) => Math.max(0, v - 1));
+          }}
         />
       )}
       {stage === 'results' && result && <Results result={result} onRestart={start} />}
