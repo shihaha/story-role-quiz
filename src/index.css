@@ -595,7 +595,9 @@ body {
   display: block;
   text-align: center;
   border-bottom: 0;
-  background: radial-gradient(circle at 18% 8%, rgba(248, 156, 181, .28), transparent 230px), linear-gradient(180deg, #fff9fb 0%, #fff 100%);
+  background:
+    linear-gradient(rgba(255,249,252,.90), rgba(255,255,255,.96)),
+    url('/assets/quiz-background.webp') center top / cover no-repeat;
 }
 .result-hero-inner { width: 100%; margin: 0 auto; }
 .result-meta-row {
@@ -655,25 +657,48 @@ body {
   letter-spacing: 0;
 }
 .result-hero h1 {
-  margin: 0 auto 10px;
-  max-width: 370px;
-  color: #4f3f49;
-  font-size: clamp(30px, 8.5vw, 41px);
-  line-height: 1.28;
-  letter-spacing: -.035em;
+  margin: 0 auto 12px;
+  max-width: 382px;
+  line-height: 1.16;
+  letter-spacing: -.025em;
   text-wrap: balance;
-  font-family: "Kaiti SC", STKaiti, KaiTi, serif;
-  font-weight: 650;
+  font-family: "STXingkai", "Xingkai SC", "HanziPen SC", "STKaiti", KaiTi, serif;
+  font-weight: 500;
+}
+.result-title-lead,
+.result-title-tail {
+  display: block;
+  color: #56495f;
+  font-size: clamp(28px, 7.4vw, 36px);
+  line-height: 1.25;
 }
 .result-title-focus {
   position: relative;
-  display: inline;
-  padding: 0 .06em;
-  color: #df4f73;
-  font-weight: 850;
-  background: linear-gradient(180deg, transparent 60%, rgba(244, 113, 146, .22) 60%, rgba(244, 113, 146, .22) 92%, transparent 92%);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 5px auto 0;
+  padding: 0 .06em .10em;
+  font-size: clamp(36px, 10vw, 48px);
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -.035em;
+  background: linear-gradient(105deg, #f05276 0%, #ee5e91 52%, #c76ab0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.result-title-focus::after {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  bottom: 0;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(246,107,139,.30), rgba(233,95,147,.70), rgba(197,105,174,.35));
+  transform: rotate(-1.2deg);
+  transform-origin: center;
 }
 .result-tagline {
   max-width: 345px;
@@ -717,7 +742,18 @@ body {
   line-height: 1.55;
   text-align: left;
 }
-.tag-row { gap: 7px; }
+.result-keywords-heading {
+  margin: 4px 0 10px;
+  color: #5f5062;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: .04em;
+  text-align: left;
+}
+.tag-row {
+  justify-content: flex-start;
+  gap: 8px;
+}
 .tag-row span, .result-keyword-row span {
   padding: 7px 11px;
   border: 0;

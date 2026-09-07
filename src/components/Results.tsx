@@ -114,7 +114,7 @@ const RESULT_TITLE_FOCUS: Record<string, string> = {
   'steady-after-mutual': '越谈越稳',
   'slow-to-start': '很少贸然开始',
   'keep-self': '不会把自己全搭进去',
-  'need-to-know': '越想知道对方怎么想',
+  'need-to-know': '越想知道对方到底怎么想',
   'cooling-means-something': '重新判断整段关系',
   'wait-for-clearer-signal': '再确定一点',
   'best-in-ambiguity': '真的靠近以后反而开始犹豫',
@@ -306,9 +306,9 @@ export default function Results({ result, onRestart }: ResultsProps) {
             <div className="result-score">匹配度 {score}%</div>
           </div>
           <h1>
-            {titleBefore}
+            <span className="result-title-lead">{titleBefore}</span>
             {focusIndex >= 0 && <span className="result-title-focus">{titleFocus}</span>}
-            {titleAfter}
+            {titleAfter && <span className="result-title-tail">{titleAfter}</span>}
           </h1>
           <p className="result-tagline">“{role.tagline}”</p>
           <div className="result-art-card">
@@ -319,6 +319,7 @@ export default function Results({ result, onRestart }: ResultsProps) {
             />
             <div className="result-photo-note">{role.quote}</div>
           </div>
+          <div className="result-keywords-heading">你的剧情关键词</div>
           <div className="tag-row">{role.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         </div>
       </div>
