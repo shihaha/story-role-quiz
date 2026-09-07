@@ -155,7 +155,6 @@ export default function Results({ result, onRestart }: ResultsProps) {
   const { role, score, userCoords, ranking } = result;
   const [copied, setCopied] = useState(false);
   const top3 = ranking.slice(0, 3);
-  const secondaryRole = ranking[1]?.role;
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
   const resultImageSrc = RESULT_IMAGE_MAP[role.id] ?? '/assets/results/result-01.webp';
   const titleFocus = RESULT_TITLE_FOCUS[role.id] ?? '';
@@ -349,43 +348,30 @@ export default function Results({ result, onRestart }: ResultsProps) {
           <RadarChart values={userCoords} accent={role.accent} />
         </section>
 
-        <section className="advice-card">
-          <div className="advice-title"><span>♥</span> 给你的一个小建议</div>
-          <p>{role.reversal}</p>
-        </section>
-
         <section className="story-section lead-section">
-          <div className="section-kicker">为什么你最容易走进这条剧情</div>
+          <div className="section-kicker">你为什么会这样</div>
           <p>{role.summary}</p>
         </section>
 
         <section className="story-grid">
-          <article className="story-section">
-            <div className="section-kicker">这条剧情通常怎么开始</div>
+          <article className="story-section story-process-card">
+            <div className="section-kicker">关系通常怎么走到这里</div>
             <p>{role.story}</p>
           </article>
-          <article className="story-section">
-            <div className="section-kicker">什么样的关系更适合你</div>
-            <p>{role.relation}</p>
-          </article>
-          <article className="story-section">
+          <article className="story-section pitfall-card">
             <div className="section-kicker">最容易踩的坑</div>
             <p>{role.reversal}</p>
           </article>
+          <article className="story-section relation-card">
+            <div className="section-kicker">什么样的关系更适合你</div>
+            <p>{role.relation}</p>
+          </article>
         </section>
 
-        <blockquote className="role-quote">“{role.quote}”</blockquote>
-
-        {secondaryRole && (
-          <section className="secondary-role-card">
-            <div className="secondary-role-topline">SECOND ROUTE · 你也很接近这条剧情</div>
-            <div className="secondary-role-name">{secondaryRole.name}</div>
-            <p>{secondaryRole.tagline}</p>
-            <small>
-              你的答案和这条剧情也很接近。换一个人、换一个关系阶段，或者当下状态不同，你的表现可能会更像这一条。
-            </small>
-          </section>
-        )}
+        <section className="advice-card">
+          <div className="advice-title"><span>♥</span> 下次可以试试这样做</div>
+          <p>{role.advice}</p>
+        </section>
 
         <section className="story-section">
           <div className="section-kicker">最接近你的三条剧情</div>

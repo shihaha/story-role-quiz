@@ -22,6 +22,7 @@ export interface Role {
   story: string;
   relation: string;
   reversal: string;
+  advice: string;
   quote: string;
   tags: string[];
 }

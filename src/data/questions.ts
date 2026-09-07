@@ -78,7 +78,7 @@ export const QUESTIONS: Question[] = [
       { text: '会觉得这是关系变亲近的表现', vector: [null, 2, null, null, null] },
       { text: '愿意陪，但也需要各自处理自己的事情', vector: [null, 4, null, null, null] },
       { text: '偶尔会产生“怎么又找我”的压力', vector: [null, 7, null, null, null] },
-      { text: '别人太依赖我，会明显降低我靠近的欲望', vector: [null, 10, null, null, null] },
+      { text: '别人太依赖我，会让我明显想拉开一点距离', vector: [null, 10, null, null, null] },
     ],
   },
   {
@@ -126,7 +126,7 @@ export const QUESTIONS: Question[] = [
     text: '你给 TA 发了一段自己觉得挺有意思的话，TA 只回：“哈哈哈。”',
     options: [
       { text: '没什么特别感觉', vector: [null, null, 1, 6, null] },
-      { text: '感觉今天好像不太有聊天状态', vector: [null, null, 4, 5, null] },
+      { text: '会觉得 TA 今天好像没什么聊天状态', vector: [null, null, 4, 5, null] },
       { text: '会觉得 TA 是不是不太想继续聊', vector: [null, null, 8, 3, null] },
       { text: '我大概率会顺势结束，不再往下接', vector: [null, null, 10, 1, 7] },
     ],
@@ -137,7 +137,7 @@ export const QUESTIONS: Question[] = [
     options: [
       { text: '等 TA 有空再说', vector: [null, null, 2, 5, null] },
       { text: '会有点在意 TA 为什么没有重新约', vector: [null, null, 5, 4, null] },
-      { text: '会明显降低我对这段关系的判断', vector: [null, null, 8, 3, null] },
+      { text: '会开始怀疑这段关系是不是还值得继续投入', vector: [null, null, 8, 3, null] },
       { text: '基本不会再由我提出第二次', vector: [null, null, 10, 1, 7] },
     ],
   },
@@ -148,7 +148,7 @@ export const QUESTIONS: Question[] = [
       { text: '别人的观察不一定准', vector: [2, null, 2, null, null] },
       { text: '会让我稍微注意一下', vector: [4, null, 4, null, null] },
       { text: '之后会开始特别注意 TA 是不是确实不够投入', vector: [7, null, 8, null, null] },
-      { text: '很可能一下影响我对这段关系的信心', vector: [10, null, 10, null, null] },
+      { text: '很可能一下子动摇我对这段关系的信心', vector: [10, null, 10, null, null] },
     ],
   },
   {
@@ -188,7 +188,7 @@ export const QUESTIONS: Question[] = [
       { text: '想发就发', vector: [null, null, null, 10, 1] },
       { text: '会随便找个自然的话题', vector: [null, null, null, 7, 3] },
       { text: '会等有合适理由再说', vector: [null, null, null, 4, 6] },
-      { text: '最后经常就没发', vector: [null, null, null, 1, 8] },
+      { text: '想了很久，最后还是没发出去', vector: [null, null, null, 1, 8] },
     ],
   },
   {
@@ -198,7 +198,7 @@ export const QUESTIONS: Question[] = [
       { text: '那我会往前一步', vector: [3, null, null, 10, 2] },
       { text: '至少会试一次', vector: [4, null, null, 7, 3] },
       { text: '我还是希望 TA 先表示', vector: [7, null, null, 3, 6] },
-      { text: '宁愿遗憾，也很难让我先暴露自己', vector: [9, 5, 7, 1, 9] },
+      { text: '宁愿留下遗憾，我也很难先把心意露出来', vector: [9, 5, 7, 1, 9] },
     ],
   },
   {
@@ -286,7 +286,7 @@ export const QUESTIONS: Question[] = [
     text: '你们已经做了很多明显超过普通朋友的事情，但始终没人提“我们到底算什么”。',
     options: [
       { text: '我会找机会主动谈清楚', vector: [4, null, null, 9, 2] },
-      { text: '会释放更明确的信号，等 TA 接', vector: [5, null, null, 7, 4] },
+      { text: '会释放更明确的信号，等 TA 接住', vector: [5, null, null, 7, 4] },
       { text: '会继续相处，但心里越来越在意', vector: [8, null, null, 3, 7] },
       { text: '如果一直这样，我可能先把自己撤回来', vector: [7, 7, 8, 1, 8] },
     ],
@@ -308,7 +308,7 @@ export const QUESTIONS: Question[] = [
       { text: '直接确认到底发生了什么', vector: [7, null, 5, 9, 2] },
       { text: '先观察一段时间再判断', vector: [5, null, 5, 4, 5] },
       { text: '会更努力一点，看能不能把关系拉回来', vector: [10, null, 7, 10, 3] },
-      { text: '会开始提前让自己退出', vector: [7, 7, 10, 1, 9] },
+      { text: '会开始提前把自己从这段关系里撤出来', vector: [7, 7, 10, 1, 9] },
     ],
   },
   {
@@ -318,7 +318,7 @@ export const QUESTIONS: Question[] = [
       { text: '关系结束这件事本身就是答案', vector: [2, 3, 2, null, 2] },
       { text: '会遗憾，但慢慢也能往前走', vector: [4, 3, 4, null, 4] },
       { text: '很长时间以后，我可能还会想知道到底为什么', vector: [7, 4, 7, null, 8] },
-      { text: '如果有机会，我确实很想得到 TA 一个真正的解释', vector: [9, 4, 8, 6, 9] },
+      { text: '如果有机会，我确实很想从 TA 那里得到一个真正的解释', vector: [9, 4, 8, 6, 9] },
     ],
   },
 ];
