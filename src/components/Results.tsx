@@ -96,19 +96,19 @@ function loadRasterImage(src: string) {
   });
 }
 
-const RESULT_SPRITE_INDEX: Record<string, number> = {
-  'steady-after-mutual': 0,
-  'slow-to-start': 1,
-  'keep-self': 2,
-  'need-to-know': 3,
-  'cooling-means-something': 4,
-  'wait-for-clearer-signal': 5,
-  'best-in-ambiguity': 6,
-  'pull-away-when-chased': 7,
-  'leave-before-rejection': 8,
-  'fine-but-not-fine': 9,
-  'solve-it-now': 10,
-  'need-a-real-ending': 11,
+const RESULT_IMAGE_MAP: Record<string, string> = {
+  'steady-after-mutual': '/assets/results/result-01.webp',
+  'slow-to-start': '/assets/results/result-02.webp',
+  'keep-self': '/assets/results/result-03.webp',
+  'need-to-know': '/assets/results/result-04.webp',
+  'cooling-means-something': '/assets/results/result-05.webp',
+  'wait-for-clearer-signal': '/assets/results/result-06.webp',
+  'best-in-ambiguity': '/assets/results/result-07.webp',
+  'pull-away-when-chased': '/assets/results/result-08.webp',
+  'leave-before-rejection': '/assets/results/result-09.webp',
+  'fine-but-not-fine': '/assets/results/result-10.webp',
+  'solve-it-now': '/assets/results/result-11.webp',
+  'need-a-real-ending': '/assets/results/result-12.webp',
 };
 const RESULT_TITLE_FOCUS: Record<string, string> = {
   'steady-after-mutual': '越谈越稳',
@@ -125,43 +125,30 @@ const RESULT_TITLE_FOCUS: Record<string, string> = {
   'need-a-real-ending': '一个真正的句号',
 };
 
-function storySpritePosition(index: number) {
-  const column = index % 4;
-  const row = Math.floor(index / 4);
-  return `${(column / 3) * 100}% ${(row / 2) * 100}%`;
-}
-
-function drawStoryTile(
+function drawCoverImage(
   ctx: CanvasRenderingContext2D,
   image: HTMLImageElement,
-  index: number,
   x: number,
   y: number,
   width: number,
   height: number,
 ) {
-  const tileWidth = image.width / 4;
-  const tileHeight = image.height / 3;
-  const column = index % 4;
-  const row = Math.floor(index / 4);
-  const sourceX = column * tileWidth;
-  const sourceY = row * tileHeight;
-  const tileRatio = tileWidth / tileHeight;
+  const imageRatio = image.width / image.height;
   const boxRatio = width / height;
-  let cropX = sourceX;
-  let cropY = sourceY;
-  let cropWidth = tileWidth;
-  let cropHeight = tileHeight;
+  let sourceX = 0;
+  let sourceY = 0;
+  let sourceWidth = image.width;
+  let sourceHeight = image.height;
 
-  if (tileRatio > boxRatio) {
-    cropWidth = tileHeight * boxRatio;
-    cropX += (tileWidth - cropWidth) / 2;
+  if (imageRatio > boxRatio) {
+    sourceWidth = image.height * boxRatio;
+    sourceX = (image.width - sourceWidth) / 2;
   } else {
-    cropHeight = tileWidth / boxRatio;
-    cropY += (tileHeight - cropHeight) / 2;
+    sourceHeight = image.width / boxRatio;
+    sourceY = (image.height - sourceHeight) / 2;
   }
 
-  ctx.drawImage(image, cropX, cropY, cropWidth, cropHeight, x, y, width, height);
+  ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
 }
 
 export default function Results({ result, onRestart }: ResultsProps) {
@@ -170,8 +157,7 @@ export default function Results({ result, onRestart }: ResultsProps) {
   const top3 = ranking.slice(0, 3);
   const secondaryRole = ranking[1]?.role;
   const strongestIndex = userCoords.indexOf(Math.max(...userCoords));
-  const storyIndex = RESULT_SPRITE_INDEX[role.id] ?? 0;
-  const storyBackgroundPosition = storySpritePosition(storyIndex);
+  const resultImageSrc = RESULT_IMAGE_MAP[role.id] ?? '/assets/results/result-01.webp';
   const titleFocus = RESULT_TITLE_FOCUS[role.id] ?? '';
   const focusIndex = titleFocus ? role.name.indexOf(titleFocus) : -1;
   const titleBefore = focusIndex >= 0 ? role.name.slice(0, focusIndex) : role.name;
@@ -235,12 +221,12 @@ export default function Results({ result, onRestart }: ResultsProps) {
     const imageHeight = 500;
 
     try {
-      const image = await loadRasterImage('/assets/results/story-results-sprite.webp');
+      const image = await loadRasterImage(resultImageSrc);
       ctx.save();
       ctx.beginPath();
       ctx.roundRect(imageX, imageY, imageWidth, imageHeight, 34);
       ctx.clip();
-      drawStoryTile(ctx, image, storyIndex, imageX, imageY, imageWidth, imageHeight);
+      drawCoverImage(ctx, image, imageX, imageY, imageWidth, imageHeight);
       ctx.restore();
     } catch {
       const fallback = ctx.createLinearGradient(imageX, imageY, imageX + imageWidth, imageY + imageHeight);
@@ -327,11 +313,10 @@ export default function Results({ result, onRestart }: ResultsProps) {
           </h1>
           <p className="result-tagline">“{role.tagline}”</p>
           <div className="result-art-card">
-            <div
+            <img
               className="result-story-art"
-              role="img"
-              aria-label={`${role.name}的专属剧情插画`}
-              style={{ backgroundPosition: storyBackgroundPosition }}
+              src={resultImageSrc}
+              alt={`${role.name}的专属剧情插画`}
             />
             <div className="result-photo-note">{role.quote}</div>
           </div>

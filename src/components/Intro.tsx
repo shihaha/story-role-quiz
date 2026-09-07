@@ -7,7 +7,7 @@ export default function Intro({ onStart }: IntroProps) {
     <section className="intro-screen">
       <div className="intro-card romance-cover">
         <div className="cover-visual">
-          <img src="/assets/cover-romance.jpg" alt="窗边女孩与猫的恋爱剧情氛围图" />
+          <img src="/assets/cover-romance.webp" alt="窗边女孩与猫的恋爱剧情氛围图" />
           <div className="cover-shade" />
           <div className="cover-brand">LOVE<br />STORY<br />TEST</div>
           <div className="cover-copy">

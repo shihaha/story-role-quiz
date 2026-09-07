@@ -492,7 +492,9 @@ body {
   margin: 0 auto;
   padding: max(12px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
   color: var(--romance-ink);
-  background: rgba(255, 251, 252, .98);
+  background:
+    linear-gradient(rgba(255, 251, 252, .84), rgba(255, 251, 252, .91)),
+    url('/assets/quiz-background.webp') center / cover no-repeat;
   box-shadow: 0 0 60px rgba(92, 63, 83, .07);
 }
 .mobile-quiz-header { min-height: 56px; }
@@ -689,14 +691,13 @@ body {
 .result-story-art {
   width: 100%;
   display: block;
-  aspect-ratio: 384 / 341;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
   border-radius: 24px;
   border: 1px solid #f1e3e9;
   box-shadow: 0 12px 34px rgba(91, 66, 84, .12);
-  background-image: url('/assets/results/story-results-sprite.webp');
-  background-size: 400% 300%;
-  background-repeat: no-repeat;
-  background-color: #f8edf1;
+  background: #f8edf1;
 }
 .result-photo-note {
   position: absolute;
