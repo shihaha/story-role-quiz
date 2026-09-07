@@ -946,3 +946,155 @@ body {
   .question-copy-zone { height: 230px; min-height: 230px; }
   .quiz-stage-card h2 { font-size: 22px; }
 }
+
+/* access gate */
+.access-shell {
+  min-height: 100dvh;
+  background: #fff6fa;
+}
+.access-screen {
+  position: relative;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: max(28px, env(safe-area-inset-top)) 18px max(28px, env(safe-area-inset-bottom));
+  color: #584a5d;
+  background: #fff8fb;
+}
+.access-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255,248,251,.68), rgba(255,248,251,.84)),
+    url('/assets/cover-romance.webp') center / cover no-repeat;
+  transform: scale(1.02);
+}
+.access-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 72% 18%, rgba(239, 157, 192, .25), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,246,250,.34));
+  backdrop-filter: blur(4px);
+}
+.access-card {
+  position: relative;
+  z-index: 1;
+  width: min(390px, 100%);
+  padding: 34px 24px 24px;
+  border: 1px solid rgba(255,255,255,.82);
+  border-radius: 30px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 24px 70px rgba(92, 63, 83, .16);
+  backdrop-filter: blur(14px);
+  text-align: center;
+}
+.access-kicker {
+  color: #c48ca1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .18em;
+}
+.access-mark {
+  width: 48px;
+  height: 48px;
+  margin: 16px auto 13px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff0f5, #f5eafb);
+  color: #e65f83;
+  font-size: 27px;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(232,95,131,.10);
+}
+.access-card h1 {
+  margin: 0;
+  color: #56485c;
+  font-family: "STXingkai", "Xingkai SC", "HanziPen SC", "STKaiti", KaiTi, serif;
+  font-size: clamp(30px, 8vw, 38px);
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+.access-card > p {
+  margin: 10px 0 22px;
+  color: #9b8996;
+  font-size: 13px;
+}
+.access-form {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+.access-form label {
+  margin-left: 4px;
+  color: #8f7b89;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .05em;
+}
+.access-form input {
+  width: 100%;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid #efdfe6;
+  border-radius: 17px;
+  outline: none;
+  background: rgba(255,255,255,.92);
+  color: #514652;
+  font: 600 16px/1 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .06em;
+  box-shadow: 0 7px 22px rgba(102, 75, 91, .04);
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.access-form input::placeholder {
+  color: #c3b4bd;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.access-form input:focus {
+  border-color: #ee8da7;
+  box-shadow: 0 0 0 4px rgba(239,113,148,.10);
+}
+.access-form input[aria-invalid='true'] {
+  border-color: #e77691;
+}
+.access-submit {
+  min-height: 54px;
+  margin-top: 2px;
+  border: 0;
+  border-radius: 17px;
+  background: linear-gradient(135deg, #f67c99, #e95a84);
+  color: #fff;
+  font-weight: 780;
+  box-shadow: 0 12px 28px rgba(232, 89, 130, .22);
+  cursor: pointer;
+}
+.access-submit span { margin-left: 7px; font-size: 18px; }
+.access-submit:active { transform: translateY(1px); }
+.access-error {
+  min-height: 18px;
+  padding-left: 4px;
+  color: transparent;
+  font-size: 11px;
+  text-align: left;
+}
+.access-error.is-visible { color: #d75577; }
+.access-note {
+  margin-top: 8px;
+  color: #a797a2;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.access-disclaimer {
+  margin-top: 16px;
+  color: #c1b4bc;
+  font-size: 9px;
+}
+
+@media (max-width: 380px) {
+  .access-card { padding: 28px 18px 20px; border-radius: 26px; }
+  .access-card h1 { font-size: 30px; }
+}

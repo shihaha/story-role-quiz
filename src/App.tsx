@@ -2,12 +2,14 @@ import { useState } from 'react';
 import Intro from './components/Intro';
 import Quiz from './components/Quiz';
 import Results from './components/Results';
+import AccessGate, { hasStoredAccess } from './components/AccessGate';
 import { QUESTIONS } from './data/questions';
 import type { Stage, Vec5 } from './data/types';
 import { averageVectors, buildResult } from './utils/matching';
 import type { MatchResult } from './utils/matching';
 
 export default function App() {
+  const [unlocked, setUnlocked] = useState(() => hasStoredAccess());
   const [stage, setStage] = useState<Stage>('intro');
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Vec5[]>([]);
@@ -34,6 +36,14 @@ export default function App() {
     setAnswers(next);
     setIndex((v) => v + 1);
   };
+
+  if (!unlocked) {
+    return (
+      <main className="app-shell access-shell">
+        <AccessGate onUnlock={() => setUnlocked(true)} />
+      </main>
+    );
+  }
 
   return (
     <main className="app-shell">
