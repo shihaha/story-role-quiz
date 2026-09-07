@@ -305,7 +305,6 @@ export default function Results({ result, onRestart }: ResultsProps) {
             <div className="result-eyebrow">你的恋爱剧情</div>
             <div className="result-score">匹配度 {score}%</div>
           </div>
-          <div className="result-keyword">{role.tags[0]}</div>
           <h1>
             {titleBefore}
             {focusIndex >= 0 && <span className="result-title-focus">{titleFocus}</span>}
