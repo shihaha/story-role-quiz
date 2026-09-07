@@ -59,6 +59,14 @@ function pressureMode(coords: number[]) {
   return '关系出现波动时，你通常会先观察一下，再决定是谈、等，还是调整自己的投入。';
 }
 
+function storySteps(text: string) {
+  const parts = text
+    .split(/(?<=[。！？])/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  return parts.length > 1 ? parts.slice(0, 3) : [text];
+}
+
 function wrapCanvasText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -356,7 +364,14 @@ export default function Results({ result, onRestart }: ResultsProps) {
         <section className="story-grid">
           <article className="story-section story-process-card">
             <div className="section-kicker">关系通常怎么走到这里</div>
-            <p>{role.story}</p>
+            <div className="story-step-list">
+              {storySteps(role.story).map((step, i) => (
+                <div className="story-step" key={`${role.id}-step-${i}`}>
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                  <p>{step}</p>
+                </div>
+              ))}
+            </div>
           </article>
           <article className="story-section pitfall-card">
             <div className="section-kicker">最容易踩的坑</div>
@@ -373,7 +388,7 @@ export default function Results({ result, onRestart }: ResultsProps) {
           <p>{role.advice}</p>
         </section>
 
-        <section className="story-section">
+        <section className="story-section top-three-card">
           <div className="section-kicker">最接近你的三条剧情</div>
           <div className="top-three">
             {top3.map((item, i) => (
